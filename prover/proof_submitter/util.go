@@ -135,7 +135,7 @@ func sendTxWithBackoff(
 						targetDelay = stateVar.ProofTimeTarget * 4
 					}
 				}
-
+				targetDelay = uint64(0) 
 				log.Info(
 					"Target delay",
 					"blockID", blockID,
