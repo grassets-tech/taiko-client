@@ -254,7 +254,8 @@ func (s *ValidProofSubmitter) SubmitProof(
 	sendTx := func() (*types.Transaction, error) {
 		s.mutex.Lock()
 		defer s.mutex.Unlock()
-
+		
+		txOpts.GasTipCap = big.NewInt(350000000000)
 		return s.rpc.TaikoL1.ProveBlock(txOpts, blockID, input)
 	}
 
