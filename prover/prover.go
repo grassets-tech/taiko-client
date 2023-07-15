@@ -207,7 +207,7 @@ func InitFromConfig(ctx context.Context, p *Prover, cfg *Config) (err error) {
 		p.cfg.Graffiti,
 		p.cfg.ExpectedReward,
 		p.cfg.BackOffRetryInterval,
-		p.cfg.GasLimit
+		p.cfg.GasLimit,
 	); err != nil {
 		return err
 	}
