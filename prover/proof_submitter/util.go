@@ -150,10 +150,11 @@ func sendTxWithBackoff(
 				if time.Now().Before(proposedTime.Add(time.Duration(targetDelay) * time.Second)) {
 					return errNeedWaiting
 				}
-			} else {
-				log.Info("Proof was submitted another prover, skip the current proof submission", "blockID", blockID)
-				return nil
-			}
+			} 
+			//else {
+			//	log.Info("Proof was submitted another prover, skip the current proof submission", "blockID", blockID)
+			//	return nil
+			//}
 		}
 
 		tx, err := sendTxFunc()
