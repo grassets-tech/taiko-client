@@ -31,9 +31,10 @@ func isSubmitProofTxErrorRetryable(err error, blockID *big.Int) bool {
 	if !strings.HasPrefix(err.Error(), "L1_") {
 		return true
 	}
-
-	log.Warn("🤷‍♂️ Unretryable proof submission error", "error", err, "blockID", blockID)
-	return false
+	// MOD
+	//log.Warn("🤷‍♂️ Unretryable proof submission error", "error", err, "blockID", blockID)
+	//return false
+	return true
 }
 
 // getProveBlocksTxOpts creates a bind.TransactOpts instance using the given private key.
