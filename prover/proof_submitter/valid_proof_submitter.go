@@ -146,7 +146,6 @@ func (s *ValidProofSubmitter) RequestProof(ctx context.Context, event *bindings.
 		Graffiti:           common.Bytes2Hex(s.graffiti[:]),
 		GasUsed:            block.GasUsed(),
 		ParentGasUsed:      parent.GasUsed(),
-		GasLimit:	    s.gasLimit,
 	}
 
 	if err := s.proofProducer.RequestProof(ctx, opts, event.Id, &event.Meta, block.Header(), s.resultCh); err != nil {
