@@ -259,7 +259,7 @@ func (s *ValidProofSubmitter) SubmitProof(
 		defer s.mutex.Unlock()
 		
 		//txOpts.GasTipCap = big.NewInt(250000000000)
-		txOpts.GasTipCap = s.gasLimit
+		txOpts.GasTipCap = big.NewInt(s.gasLimit)
 		return s.rpc.TaikoL1.ProveBlock(txOpts, blockID, input)
 	}
 
