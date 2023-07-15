@@ -261,6 +261,7 @@ func (s *ValidProofSubmitter) SubmitProof(
 		//txOpts.GasTipCap = big.NewInt(250000000000)
 		//txOpts.GasTipCap = big.NewInt.SetUint64(s.gasLimit)
 		txOpts.GasTipCap = new(big.Int).SetUint64(s.gasLimit)
+		log.Info("Proof will be sent with gas: ", txOpts.GasTipCap)
 		return s.rpc.TaikoL1.ProveBlock(txOpts, blockID, input)
 	}
 
