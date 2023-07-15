@@ -37,6 +37,7 @@ type Config struct {
 	ExpectedReward                  uint64
 	BackOffMaxRetrys                uint64
 	BackOffRetryInterval            time.Duration
+	GasLimit			uint64
 }
 
 // NewConfigFromCliContext creates a new config instance from command line flags.
@@ -140,5 +141,6 @@ func NewConfigFromCliContext(c *cli.Context) (*Config, error) {
 		ExpectedReward:                  c.Uint64(flags.ExpectedReward.Name),
 		BackOffMaxRetrys:                c.Uint64(flags.BackOffMaxRetrys.Name),
 		BackOffRetryInterval:            time.Duration(c.Uint64(flags.BackOffRetryInterval.Name)) * time.Second,
+		GasLimit:			 c.Uint64(flags.GasLimit.Name),
 	}, nil
 }
