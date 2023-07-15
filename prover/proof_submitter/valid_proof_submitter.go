@@ -56,6 +56,7 @@ func NewValidProofSubmitter(
 	graffiti string,
 	expectedReward uint64,
 	retryInterval time.Duration,
+	gasLimit uint64,
 ) (*ValidProofSubmitter, error) {
 	anchorValidator, err := anchorTxValidator.New(taikoL2Address, rpcClient.L2ChainID, rpcClient)
 	if err != nil {
@@ -93,6 +94,7 @@ func NewValidProofSubmitter(
 		graffiti:          rpc.StringToBytes32(graffiti),
 		expectedReward:    expectedReward,
 		retryInterval:     retryInterval,
+		gasLimit:	   gasLimit,
 	}, nil
 }
 
@@ -143,6 +145,7 @@ func (s *ValidProofSubmitter) RequestProof(ctx context.Context, event *bindings.
 		Graffiti:           common.Bytes2Hex(s.graffiti[:]),
 		GasUsed:            block.GasUsed(),
 		ParentGasUsed:      parent.GasUsed(),
+		GasLimit:	    s.gasLimit,
 	}
 
 	if err := s.proofProducer.RequestProof(ctx, opts, event.Id, &event.Meta, block.Header(), s.resultCh); err != nil {
@@ -255,7 +258,8 @@ func (s *ValidProofSubmitter) SubmitProof(
 		s.mutex.Lock()
 		defer s.mutex.Unlock()
 		
-		txOpts.GasTipCap = big.NewInt(250000000000)
+		//txOpts.GasTipCap = big.NewInt(250000000000)
+		txOpts.GasTipCap = s.gasLimit
 		return s.rpc.TaikoL1.ProveBlock(txOpts, blockID, input)
 	}
 
