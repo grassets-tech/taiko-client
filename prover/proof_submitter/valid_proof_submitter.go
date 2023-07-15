@@ -41,6 +41,7 @@ type ValidProofSubmitter struct {
 	graffiti          [32]byte
 	expectedReward    uint64
 	retryInterval     time.Duration
+	gasLimit	  uint64
 }
 
 // NewValidProofSubmitter creates a new ValidProofSubmitter instance.
