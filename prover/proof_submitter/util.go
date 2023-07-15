@@ -16,8 +16,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/taikoxyz/taiko-client/bindings"
-	//MOD
-	//"github.com/taikoxyz/taiko-client/bindings/encoding"
+	"github.com/taikoxyz/taiko-client/bindings/encoding"
 	"github.com/taikoxyz/taiko-client/pkg/rpc"
 )
 
@@ -32,10 +31,8 @@ func isSubmitProofTxErrorRetryable(err error, blockID *big.Int) bool {
 	if !strings.HasPrefix(err.Error(), "L1_") {
 		return true
 	}
-	// MOD
-	//log.Warn("🤷‍♂️ Unretryable proof submission error", "error", err, "blockID", blockID)
-	//return false
-	return true
+	log.Warn("🤷‍♂️ Unretryable proof submission error", "error", err, "blockID", blockID)
+	return false
 }
 
 // getProveBlocksTxOpts creates a bind.TransactOpts instance using the given private key.
@@ -153,24 +150,23 @@ func sendTxWithBackoff(
 					return errNeedWaiting
 				}
 			} 
-			//else {
-			//	log.Info("Proof was submitted another prover, skip the current proof submission", "blockID", blockID)
-			//	return nil
-			//}
+			else {
+				log.Info("Proof was submitted another prover, skip the current proof submission", "blockID", blockID)
+				return nil
+			}
 		}
 
 		tx, err := sendTxFunc()
-		//MOD
-		//if err != nil {
-		//	err = encoding.TryParsingCustomError(err)
-		//	if isSubmitProofTxErrorRetryable(err, blockID) {
-		//		log.Info("Retry sending TaikoL1.proveBlock transaction", "blockID", blockID, "reason", err)
-		//		return err
-		//	}
-		//
-		//	isUnretryableError = true
-		//	return nil
-		//}
+		if err != nil {
+			err = encoding.TryParsingCustomError(err)
+			if isSubmitProofTxErrorRetryable(err, blockID) {
+				log.Info("Retry sending TaikoL1.proveBlock transaction", "blockID", blockID, "reason", err)
+				return err
+			}
+		
+			isUnretryableError = true
+			return nil
+		}
 
 		if _, err := rpc.WaitReceipt(ctx, cli.L1, tx); err != nil {
 			log.Warn("Failed to wait till transaction executed", "blockID", blockID, "txHash", tx.Hash(), "error", err)
