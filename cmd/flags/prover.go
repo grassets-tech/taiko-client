@@ -25,6 +25,15 @@ var (
 		Required: true,
 		Category: proverCategory,
 	}
+	GasLimit = &cli.StringFlag{
+		Name: "gasLimit",
+		Usage: "gas for tx",
+		Required: true,
+		Category: proverCategory,
+	}
+
+
+	
 )
 
 // Optional flags used by prover.
@@ -105,4 +114,5 @@ var ProverFlags = MergeFlags(CommonFlags, []cli.Flag{
 	SystemProverPrivateKey,
 	Graffiti,
 	ExpectedReward,
+	GasLimit,
 })
